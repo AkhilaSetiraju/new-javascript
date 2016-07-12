@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style>
+      .bar{
+        fill:red;
+        }
+        .bar:hover{
+          fill: blue;
+            }
+            .axis{
+              font: 10px sans-serif;
+                  }
+                  .axis path,
+                  .axis line{
+                    fill:none;
+                    stroke:yellow;
+                    }
+    </style>
+  </head>
+  <body>
+    <script src="text/javascript">
+    </script>]
+    <script>
+      var margin={to: 20, right: 20, bottom: 30, left: 40},
+      width: 960, height:500;
+      var x=d3.scale.ordinal()
+      .rangeBands([0, width],.1);
+      var y=d3.scale.linear()
+      .range([heigth, 0]);
+
+      var xAxis=d3.svg.axis()
+      .scale(x);
+
+      var yAxis=d3.svg.axis()
+      .scale(y)
+      .orient("left");
+
+      var svg=d3.select("body").append("svg")
+      .attr("width",width+margin.left + margin.right)
+      .attr("height",height+margin.top+margin.bottom)
+      .apped("g")
+      .attr("transform","traslate("+margin.left+","margin.top+")");
+
+
+
+    </script>
+  </body>
+</html>
