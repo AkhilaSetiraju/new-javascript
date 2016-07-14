@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
-<style>
+<head>
+  <style>
 
 .bar {
-  fill: steelblue;
+  fill: #006666;
 }
 
 .bar:hover {
@@ -21,21 +22,20 @@
   shape-rendering: crispEdges;
 }
 
-.x.axis path {
-  display: block;;
-}
-
 </style>
+</head>
 <body>
-<script src="//d3js.org/d3.v3.min.js"></script>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+
 <script>
 
-var margin = {top: 20, right: 20, bottom: 30, left: 140},
-    width = 1000 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
+//dimentions setting
+var margin = {top: 40, right: 20, bottom: 350, left: 180},
+    width = 800 - margin.left - margin.right,
+    height = 660 - margin.top - margin.bottom;
 
 var x = d3.scale.ordinal()
-    .rangeRoundBands([0, width], .1);
+    .rangeRoundBands([0, width], .05);
 
 var y = d3.scale.linear()
     .range([height, 0]);
@@ -54,21 +54,27 @@ var svg = d3.select("body").append("svg")
     .attr("height", height + margin.top + margin.bottom)
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
+//reading the file
 d3.json("file2.json", function(error, data) {
-  if (error) throw error;
 
+  data.forEach(function(d){
+    d["category"]=d["category"];
+    d["value"]=+d["value"];
+  });
+
+//scale the range of data
   x.domain(data.map(function(d) { return d.category; }));
   y.domain([0, d3.max(data, function(d) { return d.value; })]);
 
+
+
+//add axis
   svg.append("g")
       .attr("class", "x axis")
       .attr("transform", "translate(0," + height + ")")
       .call(xAxis)
-      .append("text")
-      .selectAll()
-        .attr("transform", "translate(300,150) rotate(-50)")
-        .attr("x", 6)
+      .selectAll("text")
+        .attr("transform", "rotate(-50)")
         .attr("dx", "-.8em")
         .attr("dy", "-.55em")
         .style("text-anchor", "end");
@@ -80,19 +86,21 @@ d3.json("file2.json", function(error, data) {
       .call(yAxis)
     .append("text")
       .attr("transform", "rotate(-90)")
-      .attr("y", 6)
+      .attr("y", -100)
       .attr("dy", ".71em")
       .style("text-anchor", "end")
       .text("no of person category wise");
 
+
+//Adding bar charts
   svg.selectAll(".bar")
       .data(data)
     .enter().append("rect")
       .attr("class", "bar")
-      .attr("x", function(d) { return x(d.category); })
+      .attr("x", function(d) { return x(d["category"]); })
       .attr("width", x.rangeBand())
-      .attr("y", function(d) { return y(d.value); })
-      .attr("height", function(d) { return height - y(d.value); });
+      .attr("y", function(d) { return y(d["value"]); })
+      .attr("height", function(d) { return height - y(d["value"]); });
 });
 
 function type(d) {

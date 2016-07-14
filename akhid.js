@@ -103,13 +103,14 @@ console.log(jArray1);
 
 console.log(jArray3);
 
+//Write the data into JSON file
 var dataset = jArray1[0];
 var jArray4 = [];
 for(property in dataset) {
   dataset[property]["age-group"] = property;
   jArray4.push(dataset[property]);
 }
-//writeing in to a json file
+
 console.log(jArray4);
 
 var file = 'file1.json';
